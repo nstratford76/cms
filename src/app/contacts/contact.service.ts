@@ -17,11 +17,12 @@ export class ContactService {
   }
 
   getContact(id: string) {
+    var value = null;
     this.contacts.forEach(function(contact) {
       if(contact.id === id) {
-        return contact;
+        value = contact;
       }
     });
-    return null;
+    return value;
   }
 }
