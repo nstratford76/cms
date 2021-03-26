@@ -1,1 +1,85 @@
-<p>contact-edit works!</p>
+<div class="panel panel-default">
+  <div class="panel-body">
+    <form id="contact-edit" (ngSubmit)="onSubmit(f)" #f="ngForm">
+      <div class="row">
+        <div class="col-sm-12 form-group">
+          <label for="name">Name:</label>
+          <input type="text" name="name" id="name" class="form-control required" [ngModel]=contact?.name size="120"
+            max="120" #name=ngModel required>
+        </div>
+      </div>
+
+      <div class="row">
+        <div class="col-sm-12 form-group">
+          <label for="email">Email:</label>
+          <input
+           type="text"
+           id="email"
+           name="name"
+           [ngModel]=contact?.email
+           #email=ngModel
+           class="form-control required" size="120" max="255"
+           required
+           pattern="^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$">
+           <div *ngIf="email.touched && !email.valid">Enter a valid Email addresss</div>
+        </div>
+      </div>
+
+      <div class="row">
+        <div class="col-sm-12 form-group">
+          <label for="phone">Phone:</label>
+          <input
+            type="text"
+            id="phone"
+            name="phone"
+            [ngModel]=contact?.phone
+            #phone=ngModel
+            class="form-control invalid" size="150" max="255"
+            required
+            pattern="\D*([2-9]\d{2})(\D*)([2-9]\d{2})(\D*)(\d{4})\D*">
+            <div *ngIf="phone.touched && !phone.valid">Enter a valid phone number</div>
+        </div>
+      </div>
+
+      <div class="row">
+        <div class="col-sm-12 form-group">
+          <label for="imageUrl">Image URL:</label>
+          <input type="text" id="imageUrl" name="imageUrl" [ngModel]="contact?.imageUrl" #imageUrl=ngModel
+            class="form-control" size="150" max="255">
+        </div>
+      </div>
+
+      <div class="row">
+        <div class="form-group">
+          <label for="groupList">Group Contacts:</label>
+
+          <div class="row"
+               id="groupList"
+               style="min-height: 3rem;"
+               dnd-droppable [dropZones]="['contactGroup']" (onDropSuccess)="addToGroup($event)">
+
+            <div *ngFor="let contact of groupContacts; let i = index">
+              <div>
+                <app-contact-item class="col-sm-11" [contact]="contact"></app-contact-item>
+                <button class="btn btn-danger col-sm-2 deleteButton" (click)="onRemoveItem(i)">X</button>
+              </div>
+            </div>
+            <span class="dragMsg" *ngIf="groupContacts?.length < 1">Drag contacts in group here</span>
+          </div>
+
+        </div>
+      </div>
+
+      <div class="alert alert-danger" *ngIf="(name.touched && !name.valid) || email.touched && !email.valid">
+        The name and Emaail fields are required.
+      </div>
+      <div class="row">
+        <div class="col-xs-12 btn-toolbar">
+          <button class="btn btn-success" type="submit" [disabled]="!f.valid">Save</button>
+          <button class="btn btn-primary" type="button" (click)="onCancel()">Cancel</button>
+        </div>
+      </div>
+
+    </form>
+  </div>
+</div>
