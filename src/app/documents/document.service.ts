@@ -22,6 +22,7 @@ export class DocumentService {
   }
 
   getDocument(id: string) {
+    console.log(id);
     var value = null;
     this.documents.forEach(function(document) {
       if(document.id === id) {
@@ -59,7 +60,7 @@ export class DocumentService {
       return;
     }
     this.maxDocumentId++;
-    newDocument.id = this.maxDocumentId;
+    newDocument.id = this.maxDocumentId.toString();
     this.documents.push(newDocument);
     this.documentListChangedEvent.next(this.documents.slice())
   }
@@ -68,9 +69,8 @@ export class DocumentService {
     if (originalDocument == null || newDocument == null) {
       return;
     }
-
     var pos: number = this.documents.indexOf(originalDocument)
-    if (pos > 0) {
+    if (pos < 0) {
       return;
     }
     newDocument.id = originalDocument.id;

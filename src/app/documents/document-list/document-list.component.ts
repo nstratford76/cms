@@ -19,7 +19,7 @@ export class DocumentListComponent implements OnInit, OnDestroy {
       (docs: Document[]) => {
         this.documents = docs;
       }
-    )
+    );
     this.documents = this.documentService.getDocuments();
   }
 
