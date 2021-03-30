@@ -4,18 +4,24 @@
       <div class="row">
         <div class="col-sm-12 form-group">
           <label for="name">Name:</label>
-          <input type="text" name="name" id="name" class="form-control required" [ngModel]=contact?.name size="120"
-            max="120" #name=ngModel required>
+          <input type="text"
+                 name="name"
+                 id="name"
+                 class="form-control required"
+                 [ngModel]=contact?.name
+                 size="120"
+                 max="120"
+                 #name=ngModel
+                 required>
         </div>
       </div>
-
       <div class="row">
         <div class="col-sm-12 form-group">
           <label for="email">Email:</label>
           <input
            type="text"
            id="email"
-           name="name"
+           name="email"
            [ngModel]=contact?.email
            #email=ngModel
            class="form-control required" size="120" max="255"
@@ -71,7 +77,7 @@
       </div>
 
       <div class="alert alert-danger" *ngIf="(name.touched && !name.valid) || email.touched && !email.valid">
-        The name and Emaail fields are required.
+        The name and Email fields are required.
       </div>
       <div class="row">
         <div class="col-xs-12 btn-toolbar">

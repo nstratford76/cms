@@ -30,14 +30,14 @@ export class ContactEditComponent implements OnInit {
           return;
         }
         this.originalContact = this.contactService.getContact(this.id);
-        if (this.originalContact = null) {
+        if (this.originalContact === null) {
           return;
         }
         this.editMode = true;
         this.contact = JSON.parse(JSON.stringify(this.originalContact));
 
-        if (this.contact.group != null) {
-          this.groupContacts = JSON.parse(JSON.stringify(this.contact.group));
+        if (this.originalContact.group && this.originalContact.group.length > 0) {
+          this.groupContacts = JSON.parse(JSON.stringify(this.originalContact.group));
         }
       }
     )
@@ -80,7 +80,7 @@ export class ContactEditComponent implements OnInit {
  }
 
   onCancel() {
-    this.router.navigate(['../'])
+    this.router.navigate(['/contacts'])
   }
 
   addToGroup($event: any) {
@@ -92,7 +92,7 @@ export class ContactEditComponent implements OnInit {
     this.groupContacts.push(selectedContact);
   }
 
-  onremoveItem(index: number) {
+  onRemoveItem(index: number) {
     if (index < 0 || index >= this.groupContacts.length) {
       return;
     }
