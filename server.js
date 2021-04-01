@@ -8,9 +8,9 @@ var logger = require('morgan');
 
 // import the routing file to handle the default (index) route
 var index = require('./src/app/server/routes/app');
-const messageRoutes = require('./src/app/serer/routes/messages');
+const messageRoutes = require('./src/app/server/routes/messages');
 const contactRoutes = require('./src/app/server/routes/contacts');
-const documentRoutes = require('./server/routes/documents');
+const documentRoutes = require('./src/app/server/routes/documents');
 
 // ... ADD CODE TO IMPORT YOUR ROUTING FILES HERE ...
 
