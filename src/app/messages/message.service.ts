@@ -18,7 +18,7 @@ export class MessageService {
 
    getMessages() {
     this.http
-      .get<Message[]>('https://nrs-cms-9da61-default-rtdb.firebaseio.com/messages.json')
+      .get<Message[]>('http://localhost:3000/contacts')
       .subscribe(
         (messages: Message[]) => {
         this.messages = messages;
@@ -43,9 +43,48 @@ export class MessageService {
     return value;
   }
 
-  addMessage(message: Message) {
-    this.messages.push(message);
-    this.storeMessages();
+  addMessage(msg: Message) {
+    if (!msg) {
+      return;
+    }
+
+    // make sure id of the new MessageDocument is empty
+    msg.id = '';
+
+    const headers = new HttpHeaders({ 'Content-Type': 'application/json' });
+
+    // add to database
+    this.http
+      .post<{ message: string; msg: Message }>(
+        'http://localhost:3000/messages',
+        msg,
+        { headers: headers }
+      )
+      .subscribe((responseData) => {
+        // add new document to documents
+        this.messages.push(responseData.msg);
+        this.sortAndSend();
+      });
+  }
+
+  deleteMessage(message: Message) {
+    if (!message) {
+      return;
+    }
+
+    const pos = this.messages.findIndex((d) => d.id === message.id);
+
+    if (pos < 0) {
+      return;
+    }
+
+    // delete from database
+    this.http
+      .delete('http://localhost:3000/contacts/' + message.id)
+      .subscribe((response: Response) => {
+        this.messages.splice(pos, 1);
+        this.sortAndSend();
+      });
   }
 
   getMaxId(): number {
@@ -68,5 +107,19 @@ export class MessageService {
         this.messageChangedEvent.next(this.messages.slice());
       }
     )
+  }
+
+  sortAndSend() {
+    this.maxMessageId = this.getMaxId();
+    this.messages.sort((a, b) => {
+      if (a.sender < b.sender) {
+        return -1;
+      }
+      if (a.sender > b.sender) {
+        return 1;
+      }
+      return 0;
+    });
+    this.messageChangedEvent.next(this.messages.slice());
   }
 }
